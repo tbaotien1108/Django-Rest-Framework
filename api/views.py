@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Movie, Rating
+from django.contrib.auth.models import User
 from .serializers import MovieSerializer, RatingSerializer
 
 
@@ -13,6 +14,13 @@ class MovieViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'])
     def rate_movie(self, request, pk=None):
         if 'stars' in request.data:
+
+            movie = Movie.objects.get(id=pk)
+            stars = request.data['stars']
+            # user = request.user
+            user = User.objects.get(id=1)
+            print('user', user.username)
+
             response = {'message': 'its working'}
             return Response(response, status=status.HTTP_200_OK)
         else:
